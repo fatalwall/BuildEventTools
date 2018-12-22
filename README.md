@@ -1,7 +1,7 @@
 # BuildEventTools
 Tools to assist in building and packaging of applicaitons
 
-#GetAssemblyValue
+# GetAssemblyValue
 
         GetAssemblyValue
         Outputs a specified detail about an assembly
