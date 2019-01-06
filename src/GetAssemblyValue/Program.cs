@@ -35,8 +35,12 @@ namespace GetAssemblyValue
             output += Environment.NewLine + string.Format("\t{0}\t\t{1}", "Path", "Assembly Path (dll or exe)");
             output += Environment.NewLine + string.Format("\t{0}\t{1}", "Value Name", "(Optional) Defaults to Version if no value is provided");
             output += Environment.NewLine + string.Format("\t\t\t\t{0}", "Expected Values:");
-            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "CompanyName");
-            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "ProductName");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Company");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Copyright");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Description");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Product");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Title");
+            output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Trademark");
             output += Environment.NewLine + string.Format("\t\t\t\t\t{0}", "Version");
 
             //Information Commands
@@ -101,8 +105,12 @@ namespace GetAssemblyValue
              *   ValueName      (Optional) Defaults to Version if no value is provided
              *                  Expected Values:
              *                      Version
-             *                      ProductName
-             *                      CompanyName
+             *                      Company
+             *                      Copyright
+             *                      Description
+             *                      Product
+             *                      Title
+             *                      Trademark
              *                     
              * Exit Codes
              *    0             Success
@@ -137,11 +145,24 @@ namespace GetAssemblyValue
                 case ValueNames.Version:
                     output = assembly.GetName().Version.ToString();
                     break;
-                case ValueNames.ProductName:
+                case ValueNames.Company:
+                    output = ((AssemblyCompanyAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0]))?.Company ?? "";
                     output = assembly.GetName().Name;
                     break;
-                case ValueNames.CompanyName:
-                    output = ((AssemblyCompanyAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0]))?.Company ?? "";
+                case ValueNames.Copyright:
+                    output = ((AssemblyCopyrightAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true)[0]))?.Copyright ?? "";
+                    break;
+                case ValueNames.Description:
+                    output = ((AssemblyDescriptionAttribute)(assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), true)[0]))?.Description ?? "";
+                    break;
+                case ValueNames.Product:
+                    output = ((AssemblyProductAttribute)(assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0]))?.Product ?? "";
+                    break;
+                case ValueNames.Title:
+                    output = ((AssemblyTitleAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), true)[0]))?.Title ?? "";
+                    break;
+                case ValueNames.Trademark:
+                    output = ((AssemblyTrademarkAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTrademarkAttribute), true)[0]))?.Trademark ?? "";
                     break;
             }
             assembly = null;
@@ -151,8 +172,12 @@ namespace GetAssemblyValue
         enum ValueNames
         {
             Version,
-            ProductName,
-            CompanyName
+            Product,
+            Title,
+            Copyright,
+            Trademark,
+            Description,
+            Company
         }
     }
 }
