@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetAssemblyValue", "GetAssemblyValue\GetAssemblyValue.csproj", "{4A40B1B3-0BC2-45E1-8BBC-7C6CA51FAEA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSISEmbeddedListBuilder", "NSISEmbeddedListBuilder\NSISEmbeddedListBuilder.csproj", "{D5B27D7A-5ACF-4A2E-9BA3-7AF50F22C690}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4A40B1B3-0BC2-45E1-8BBC-7C6CA51FAEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A40B1B3-0BC2-45E1-8BBC-7C6CA51FAEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A40B1B3-0BC2-45E1-8BBC-7C6CA51FAEA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B27D7A-5ACF-4A2E-9BA3-7AF50F22C690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B27D7A-5ACF-4A2E-9BA3-7AF50F22C690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B27D7A-5ACF-4A2E-9BA3-7AF50F22C690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B27D7A-5ACF-4A2E-9BA3-7AF50F22C690}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
