@@ -147,7 +147,6 @@ namespace GetAssemblyValue
                     break;
                 case ValueNames.Company:
                     output = ((AssemblyCompanyAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0]))?.Company ?? "";
-                    output = assembly.GetName().Name;
                     break;
                 case ValueNames.Copyright:
                     output = ((AssemblyCopyrightAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true)[0]))?.Copyright ?? "";
