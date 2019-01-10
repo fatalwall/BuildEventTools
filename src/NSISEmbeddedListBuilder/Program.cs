@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using INI_LIB;
+using System.IO.INI;
 
 namespace NSISEmbeddedListBuilder
 {
@@ -31,7 +28,6 @@ namespace NSISEmbeddedListBuilder
             output += Environment.NewLine + string.Format("\t\t\t\t{0}", "1 = Checked");
 
 
-
             //Information Commands
             output += Environment.NewLine;
             output += Environment.NewLine + string.Format("\t{0}\t\t{1}", "?", "Displays this menu");
@@ -55,7 +51,6 @@ namespace NSISEmbeddedListBuilder
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-2", "Last argument ignored because an odd number of arguments passedast");
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-3", "An io exception occured while trying to read or write ini file");
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-4", "A file not found exception occured while trying to read ini file");
-
 
 
             //Copywrite details
@@ -89,20 +84,20 @@ namespace NSISEmbeddedListBuilder
                 }
 
                 string Key, Value;
-                INI File = new INI(args[0]);
-                INI_Section Section = File.Sections.Where(s => s["Text"]?.Value == args[1]).FirstOrDefault();
-                if (Section is null)
+                File file = new File(args[0]);
+                Section section = file.Sections.Where(s => s["Text"]?.Value == args[1]).FirstOrDefault();
+                if (section is null)
                 {   //New Section
-                    int maxSectionNumber = File.Sections.Where(n => n.Name.StartsWith("Item ")).Select(n => int.Parse(n.Name.Replace("Item ", ""))).Max();
-                    Section = new INI_Section(string.Format("Item {0}", maxSectionNumber + 1));
-                    Section.Add(new INI_KeyValue("Text", args[1]));
+                    int maxSectionNumber = file.Sections.Where(n => n.Name.StartsWith("Item ")).Select(n => int.Parse(n.Name.Replace("Item ", ""))).Max();
+                    section = new Section(string.Format("Item {0}", maxSectionNumber + 1));
+                    section.Add(new KeyValuePair("Text", args[1]));
                     for (int i = 2; i <= args.Count() - 2; i += 2)
                     {
                         Key = args[i];
                         Value = args[i + 1];
-                        Section.Add(new INI_KeyValue(Key, Value));
+                        section.Add(new KeyValuePair(Key, Value));
                     }
-                    File.Add(Section);
+                    file.Add(section);
                 }
                 else
                 {   //Existing Section with specified Text Value
@@ -110,15 +105,15 @@ namespace NSISEmbeddedListBuilder
                     {
                         Key = args[i];
                         Value = args[i + 1];
-                        try { Section[Key].Value = Value; } //Existing Key
-                        catch { Section.Add(new INI_KeyValue(Key, Value)); } //New Key
+                        try { section[Key].Value = Value; } //Existing Key
+                        catch { section.Add(new KeyValuePair(Key, Value)); } //New Key
                     }
                 }
-                File.Write();
+                file.Write();
             }
-            catch (System.IO.FileNotFoundException) { Environment.ExitCode = -4; }
-            catch (System.IO.IOException) { Environment.ExitCode = -3; }
-            catch { Environment.ExitCode = -1; }
+            catch (System.IO.FileNotFoundException) { Environment.ExitCode = -4; Console.WriteLine("File not found."); }
+            catch (System.IO.IOException) { Environment.ExitCode = -3; Console.WriteLine("An IO excection has occured."); }
+            catch { Environment.ExitCode = -1; Console.WriteLine("An unknown exception has occured."); }
         }
     }
 }
