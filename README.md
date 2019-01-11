@@ -79,7 +79,8 @@ Tools to assist in building and packaging of applicaitons
           -1    Unknown exception has occured
           -2    Last argument ignored because an odd number of arguments passedast
           -3    An io exception occured while trying to read or write ini file
-          -4    A file not found exception occured while trying to read ini file
+          -4    A file, directory, drive not found exception occured
+		  -5	Unauthorized Access
 
 
         *************************************************************************

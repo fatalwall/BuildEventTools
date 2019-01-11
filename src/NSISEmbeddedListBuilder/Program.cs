@@ -50,8 +50,8 @@ namespace NSISEmbeddedListBuilder
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-1", "Unknown exception has occured");
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-2", "Last argument ignored because an odd number of arguments passedast");
             output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-3", "An io exception occured while trying to read or write ini file");
-            output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-4", "A file not found exception occured while trying to read ini file");
-
+            output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-4", "A file, directory, drive not found exception occured");
+            output += Environment.NewLine + string.Format("\t{0,4}\t{1}", "-5", "Unauthorized Access");
 
             //Copywrite details
             output += Environment.NewLine;
@@ -109,11 +109,25 @@ namespace NSISEmbeddedListBuilder
                         catch { section.Add(new KeyValuePair(Key, Value)); } //New Key
                     }
                 }
-                file.Write();
+                //Retry multiple times before failing
+                int Retry = 12;
+                for (int t = 0; t <= Retry; t++)
+                {
+                    try { file.Write(); break; }
+                    catch (System.IO.IOException tEx) { if (t >= Retry) throw tEx; }
+                    System.Threading.Thread.Sleep(1000 * 5);
+                }
+                Console.WriteLine(string.Format("File saved successfully: {0}", args[0]));
             }
+            catch (System.IO.DirectoryNotFoundException) { Environment.ExitCode = -4; Console.WriteLine("Directory not found."); }
+            catch (System.IO.DriveNotFoundException) { Environment.ExitCode = -4; Console.WriteLine("Drive not found."); }
+            catch (System.IO.EndOfStreamException) { Environment.ExitCode = -3; Console.WriteLine("End of stream Exception."); }
+            catch (System.IO.FileLoadException) { Environment.ExitCode = -3; Console.WriteLine("File load Exception."); }
+            catch (System.IO.PathTooLongException) { Environment.ExitCode = -3; Console.WriteLine("Path too long."); }
             catch (System.IO.FileNotFoundException) { Environment.ExitCode = -4; Console.WriteLine("File not found."); }
-            catch (System.IO.IOException) { Environment.ExitCode = -3; Console.WriteLine("An IO excection has occured."); }
-            catch { Environment.ExitCode = -1; Console.WriteLine("An unknown exception has occured."); }
+            catch (System.IO.IOException ioEx) { Environment.ExitCode = -3; Console.WriteLine(String.Format("An IO excection has occured: {0}",ioEx)); }
+            catch (System.UnauthorizedAccessException) { Environment.ExitCode = -5; Console.WriteLine("Unauthorized Access"); }
+            catch (Exception ex) { Environment.ExitCode = -1; Console.WriteLine(String.Format("An unknown exception has occured: {0}", ex)); }
         }
     }
 }
