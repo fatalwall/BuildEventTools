@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace GetAssemblyValue
 {
@@ -139,32 +140,63 @@ namespace GetAssemblyValue
             //If file path is invalid exit with error
             if (filePath == null) Environment.Exit(-1); //args[0] could not be found
 
-            Assembly assembly = Assembly.LoadFile(filePath);
-            switch (valueName)
+            try
             {
-                case ValueNames.Version:
-                    output = assembly.GetName().Version.ToString();
-                    break;
-                case ValueNames.Company:
-                    output = ((AssemblyCompanyAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0]))?.Company ?? "";
-                    break;
-                case ValueNames.Copyright:
-                    output = ((AssemblyCopyrightAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true)[0]))?.Copyright ?? "";
-                    break;
-                case ValueNames.Description:
-                    output = ((AssemblyDescriptionAttribute)(assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), true)[0]))?.Description ?? "";
-                    break;
-                case ValueNames.Product:
-                    output = ((AssemblyProductAttribute)(assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0]))?.Product ?? "";
-                    break;
-                case ValueNames.Title:
-                    output = ((AssemblyTitleAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), true)[0]))?.Title ?? "";
-                    break;
-                case ValueNames.Trademark:
-                    output = ((AssemblyTrademarkAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTrademarkAttribute), true)[0]))?.Trademark ?? "";
-                    break;
+                Assembly assembly = Assembly.LoadFile(filePath);
+                switch (valueName)
+                {
+                    case ValueNames.Version:
+                        output = assembly.GetName().Version.ToString();
+                        break;
+                    case ValueNames.Company:
+                        output = ((AssemblyCompanyAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0]))?.Company ?? "";
+                        break;
+                    case ValueNames.Copyright:
+                        output = ((AssemblyCopyrightAttribute)(assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true)[0]))?.Copyright ?? "";
+                        break;
+                    case ValueNames.Description:
+                        output = ((AssemblyDescriptionAttribute)(assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), true)[0]))?.Description ?? "";
+                        break;
+                    case ValueNames.Product:
+                        output = ((AssemblyProductAttribute)(assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0]))?.Product ?? "";
+                        break;
+                    case ValueNames.Title:
+                        output = ((AssemblyTitleAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), true)[0]))?.Title ?? "";
+                        break;
+                    case ValueNames.Trademark:
+                        output = ((AssemblyTrademarkAttribute)(assembly.GetCustomAttributes(typeof(AssemblyTrademarkAttribute), true)[0]))?.Trademark ?? "";
+                        break;
+                }
+                assembly = null;
+            } catch (BadImageFormatException)
+            {
+                FileVersionInfo exe = FileVersionInfo.GetVersionInfo(filePath);
+                switch (valueName)
+                {
+                    case ValueNames.Version:
+                        output = exe?.ProductVersion ?? "";
+                        break;
+                    case ValueNames.Company:
+                        output = exe?.CompanyName ?? "";
+                        break;
+                    case ValueNames.Copyright:
+                        output = exe?.LegalCopyright ?? "";
+                        break;
+                    case ValueNames.Description:
+                        output = exe?.FileDescription ?? "";
+                        break;
+                    case ValueNames.Product:
+                        output = exe?.ProductName ?? "";
+                        break;
+                    case ValueNames.Title:
+                        output = exe?.ProductName ?? "";
+                        break;
+                    case ValueNames.Trademark:
+                        output = exe?.LegalTrademarks ?? "";
+                        break;
+                }
+                exe = null;
             }
-            assembly = null;
             Console.Write(output);
         }
 
