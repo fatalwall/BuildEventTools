@@ -11,13 +11,13 @@ Tools to assist in building and packaging of applicaitons
         Path            Assembly Path (dll or exe)
         Value Name      (Optional) Defaults to Version if no value is provided
                                 Expected Values:
-									Version
-									Company
-									Copyright
-									Description
-									Product
-									Title
-									Trademark
+						Version
+						Company
+						Copyright
+						Description
+						Product
+						Title
+						Trademark
 									
         ?               Displays this menu
 
