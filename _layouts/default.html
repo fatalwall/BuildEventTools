@@ -51,7 +51,7 @@
         {% if site.github.is_project_page %}
           <script>
             var client = new XMLHttpRequest();
-            client.open('GET', 'https://vshed.us/_include/sidebar.md');
+            client.open('GET', 'https://raw.githubusercontent.com/fatalwall/fatalwall.github.io/master/_includes/sidebar.md');
             client.onload = function() {
               var converter = new showdown.Converter();
               document.getElementById("sidebar").innerHTML = converter.makeHtml(client.responseText);
